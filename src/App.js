@@ -1,24 +1,50 @@
-import logo from './logo.svg';
 import './App.css';
+import SearchPage from './components/SearchPage'
+import BookShelves from './components/BookShelves'
+import { useState, React, useEffect } from "react";
+import { Routes, Route} from 'react-router-dom'
+import * as BooksAPI from './BooksAPI'
 
 function App() {
+
+  
+  
+
+  const [books, setBooks] = useState([])
+
+  
+
+  useEffect(() => {
+
+    const getAllBooks = async () => {
+      const res = await BooksAPI.getAll()
+      setBooks(res)
+    }
+
+    getAllBooks()
+
+  }, [books])
+           
+                
+      
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <Routes>
+        <Route exact path="/" element={
+          <BookShelves 
+          books={books}
+          setBooks={setBooks}
+          />
+        }/>
+        <Route path="/search-page" element={
+          <SearchPage 
+          books={books}
+          setBooks={setBooks}
+          />
+        }/>
+    </Routes>
+    
   );
 }
 
